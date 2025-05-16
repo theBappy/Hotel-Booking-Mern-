@@ -11,14 +11,17 @@ const clerkWebhooks = async (req, res) => {
             'svix-signature': req.headers['svix-signature'],
         };
 
+        const payload = req.body.toString(); // Convert buffer to string
+
         try {
-            await whook.verify(JSON.stringify(req.body), headers);
+            await whook.verify(payload, headers); // Use stringified raw body
         } catch (verifyError) {
             console.error("Webhook verification failed:", verifyError.message);
             return res.status(401).json({ success: false, message: "Unauthorized webhook signature." });
         }
 
-        const { data, type } = req.body;
+        // Parse raw payload to JSON
+        const { data, type } = JSON.parse(payload);
 
         const userData = {
             _id: data.id,
