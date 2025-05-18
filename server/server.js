@@ -7,10 +7,20 @@ import { clerkMiddleware } from '@clerk/express';
 import { connectDB } from './db/connectDB.js';
 import clerkWebhooks from './controllers/clerkWebhooks.js';
 
+// static image files
+import connectCloudinary from './cdn/cloudinary.js';
+
+// api end-points
+import userRouter from './routes/user.route.js';
+import hotelRouter from './routes/hotel.route.js';
+import roomRouter from './routes/room.route.js';
+import bookingRouter from './routes/booking.route.js';
+
 connectDB();
+connectCloudinary();
 
 const app = express();
-app.use(cors());
+app.use(cors()); // enable cross-origin resource sharing
 
 // 👇 Clerk webhook must be processed BEFORE JSON middleware
 app.post('/api/clerk', bodyParser.raw({ type: 'application/json' }), clerkWebhooks);
@@ -23,6 +33,10 @@ app.use(clerkMiddleware());
 app.get('/', (req, res) => {
   res.send('API is working');
 });
+app.use('/api/user', userRouter)
+app.use('/api/hotels', hotelRouter)
+app.use('/api/rooms', roomRouter)
+app.use('/api/bookings', bookingRouter)
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
