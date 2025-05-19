@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { assets, facilityIcons, roomsDummyData } from "../assets/assets";
 import { useSearchParams } from "react-router-dom";
 import StarRating from "../components/StarRating";

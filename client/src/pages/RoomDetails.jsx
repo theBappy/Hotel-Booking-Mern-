@@ -34,7 +34,7 @@ const RoomDetails = () => {
       if(data.success){
         if(data.isAvailable){
           setIsAvailable(true)
-          toast.success('Romm is available')
+          toast.success('Room is available')
         }else{
           setIsAvailable(false)
           toast.error('Room is not available')
