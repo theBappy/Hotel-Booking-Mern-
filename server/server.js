@@ -15,12 +15,16 @@ import userRouter from './routes/user.route.js';
 import hotelRouter from './routes/hotel.route.js';
 import roomRouter from './routes/room.route.js';
 import bookingRouter from './routes/booking.route.js';
+import { stripeWebhooks } from './stripe/stripeWebhook.js';
 
 connectDB();
 connectCloudinary();
 
 const app = express();
 app.use(cors()); // enable cross-origin resource sharing
+
+// api to listen to stripe webhooks
+app.post('/api/stripe', express.raw({type: 'application/json'}), stripeWebhooks)
 
 // 👇 Clerk webhook must be processed BEFORE JSON middleware
 app.post('/api/clerk', bodyParser.raw({ type: 'application/json' }), clerkWebhooks);
